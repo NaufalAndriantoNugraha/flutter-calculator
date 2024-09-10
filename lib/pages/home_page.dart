@@ -32,6 +32,9 @@ class _HomePageState extends State<HomePage> {
     '=',
   ];
 
+  String question = '5 * 5';
+  String answer = '25';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +42,37 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Expanded(
-            child: Container(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const SizedBox(height: 50),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      question,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      answer,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 80,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             flex: 2,
