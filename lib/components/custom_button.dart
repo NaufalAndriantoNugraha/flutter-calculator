@@ -4,18 +4,20 @@ class CustomButton extends StatelessWidget {
   final String buttonText;
   final Color? textColor;
   final Color? backgroundColor;
+  final void Function()? buttonOnTap;
 
   const CustomButton({
     super.key,
     required this.buttonText,
     required this.textColor,
     required this.backgroundColor,
+    required this.buttonOnTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: null,
+      onTap: buttonOnTap,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ClipRRect(

@@ -1,5 +1,6 @@
 import 'package:calculator/components/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,14 +27,14 @@ class _HomePageState extends State<HomePage> {
     '2',
     '1',
     '+',
-    '+/-',
+    'X^2',
     '0',
     '.',
     '=',
   ];
 
-  String question = '5 * 5';
-  String answer = '25';
+  String question = '';
+  String answer = '';
 
   @override
   Widget build(BuildContext context) {
@@ -84,28 +85,74 @@ class _HomePageState extends State<HomePage> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4),
                 itemBuilder: (BuildContext context, int index) {
-                  if (index == 17) {
-                    return AspectRatio(
-                      aspectRatio: 10,
-                      child: CustomButton(
-                        buttonText: buttons[index],
-                        textColor: isOperator(buttons[index])
-                            ? Colors.white
-                            : Colors.white,
-                        backgroundColor: isOperator(buttons[index])
-                            ? const Color.fromARGB(255, 50, 50, 50)
-                            : const Color.fromARGB(255, 59, 59, 59),
-                      ),
+                  if (index == 0) {
+                    // Delete all the question and answer
+                    return CustomButton(
+                      buttonText: buttons[index],
+                      textColor: Colors.white,
+                      backgroundColor: isOperator(buttons[index])
+                          ? const Color.fromARGB(255, 50, 50, 50)
+                          : const Color.fromARGB(255, 59, 59, 59),
+                      buttonOnTap: () {
+                        setState(() {
+                          question = '';
+                          answer = '';
+                        });
+                      },
+                    );
+                  } else if (index == 1) {
+                    return CustomButton(
+                      buttonText: buttons[index],
+                      textColor: Colors.white,
+                      backgroundColor: isOperator(buttons[index])
+                          ? const Color.fromARGB(255, 50, 50, 50)
+                          : const Color.fromARGB(255, 59, 59, 59),
+                      buttonOnTap: () {
+                        setState(() {
+                          question = question.substring(0, question.length - 1);
+                        });
+                      },
+                    );
+                  } else if (index == 16) {
+                    return CustomButton(
+                      buttonText: buttons[index],
+                      textColor: Colors.white,
+                      backgroundColor: isOperator(buttons[index])
+                          ? const Color.fromARGB(255, 50, 50, 50)
+                          : const Color.fromARGB(255, 59, 59, 59),
+                      buttonOnTap: () {
+                        setState(() {
+                          squareRoot();
+                        });
+                      },
+                    );
+                  } else if (index == 19) {
+                    return CustomButton(
+                      buttonText: buttons[index],
+                      textColor: Colors.white,
+                      backgroundColor: isOperator(buttons[index])
+                          ? const Color.fromARGB(255, 50, 50, 50)
+                          : const Color.fromARGB(255, 59, 59, 59),
+                      buttonOnTap: () {
+                        setState(() {
+                          evaluateEquation();
+                        });
+                      },
+                    );
+                  } else {
+                    return CustomButton(
+                      buttonText: buttons[index],
+                      textColor: Colors.white,
+                      backgroundColor: isOperator(buttons[index])
+                          ? const Color.fromARGB(255, 50, 50, 50)
+                          : const Color.fromARGB(255, 59, 59, 59),
+                      buttonOnTap: () {
+                        setState(() {
+                          question += buttons[index];
+                        });
+                      },
                     );
                   }
-
-                  return CustomButton(
-                    buttonText: buttons[index],
-                    textColor: Colors.white,
-                    backgroundColor: isOperator(buttons[index])
-                        ? const Color.fromARGB(255, 50, 50, 50)
-                        : const Color.fromARGB(255, 59, 59, 59),
-                  );
                 },
               ),
             ),
@@ -127,5 +174,26 @@ class _HomePageState extends State<HomePage> {
       return true;
     }
     return false;
+  }
+
+  void evaluateEquation() {
+    String currentQuestion = question;
+
+    Parser p = Parser();
+    Expression exp = p.parse(currentQuestion);
+    ContextModel cm = ContextModel();
+    double eval = exp.evaluate(EvaluationType.REAL, cm);
+    answer = '$eval';
+  }
+
+  void squareRoot() {
+    String currentQuestion = question;
+    currentQuestion = '${(currentQuestion)} ^ 2';
+
+    Parser p = Parser();
+    Expression exp = p.parse(currentQuestion);
+    ContextModel cm = ContextModel();
+    double eval = exp.evaluate(EvaluationType.REAL, cm);
+    answer = '$eval';
   }
 }
