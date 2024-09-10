@@ -10,14 +10,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<String> buttons = [
-    'C',
+    'AC',
     'DEL',
     '%',
     '/',
     '9',
     '8',
     '7',
-    'x',
+    '*',
     '6',
     '5',
     '4',
@@ -26,16 +26,16 @@ class _HomePageState extends State<HomePage> {
     '2',
     '1',
     '+',
+    '+/-',
     '0',
     '.',
-    'ANS',
     '=',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color.fromARGB(255, 32, 32, 32),
       body: Column(
         children: [
           Expanded(
@@ -51,14 +51,27 @@ class _HomePageState extends State<HomePage> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4),
                 itemBuilder: (BuildContext context, int index) {
+                  if (index == 17) {
+                    return AspectRatio(
+                      aspectRatio: 10,
+                      child: CustomButton(
+                        buttonText: buttons[index],
+                        textColor: isOperator(buttons[index])
+                            ? Colors.white
+                            : Colors.white,
+                        backgroundColor: isOperator(buttons[index])
+                            ? const Color.fromARGB(255, 50, 50, 50)
+                            : const Color.fromARGB(255, 59, 59, 59),
+                      ),
+                    );
+                  }
+
                   return CustomButton(
                     buttonText: buttons[index],
-                    textColor: isOperator(buttons[index])
-                        ? Colors.white
-                        : Colors.black,
+                    textColor: Colors.white,
                     backgroundColor: isOperator(buttons[index])
-                        ? Colors.blue[400]
-                        : Colors.grey[300],
+                        ? const Color.fromARGB(255, 50, 50, 50)
+                        : const Color.fromARGB(255, 59, 59, 59),
                   );
                 },
               ),
@@ -72,11 +85,11 @@ class _HomePageState extends State<HomePage> {
   bool isOperator(String input) {
     if ((input == '%') ||
         (input == '/') ||
-        (input == 'x') ||
+        (input == '*') ||
         (input == '-') ||
         (input == '+') ||
         (input == '=') ||
-        (input == 'C') ||
+        (input == 'AC') ||
         (input == 'DEL')) {
       return true;
     }
